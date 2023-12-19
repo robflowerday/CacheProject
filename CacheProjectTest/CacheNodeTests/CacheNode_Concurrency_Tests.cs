@@ -39,7 +39,7 @@ namespace CacheProjectTest.CacheNode.Tests
                 cacheNode.NextNode = newNode;
             });
 
-            Assert.That(cacheNode.NextNode.Value, Is.EqualTo("new value"));
+            Assert.That(cacheNode.NextNode.CacheNodeValue, Is.EqualTo("new value"));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace CacheProjectTest.CacheNode.Tests
                 cacheNode.NextNode = newNode;
             });
 
-            Assert.That(cacheNode.NextNode.Value, Is.EqualTo("new value"));
+            Assert.That(cacheNode.NextNode.CacheNodeValue, Is.EqualTo("new value"));
         }
     }
 }

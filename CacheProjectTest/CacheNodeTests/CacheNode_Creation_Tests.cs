@@ -24,8 +24,8 @@ namespace CacheProjectTest.CacheNode.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(key, Is.EqualTo(cacheNode.Key));
-                Assert.That(value, Is.EqualTo(cacheNode.Value));
+                Assert.That(key, Is.EqualTo(cacheNode.CacheNodeKey));
+                Assert.That(value, Is.EqualTo(cacheNode.CacheNodeValue));
                 Assert.That(cacheNode.PrevNode, Is.Null);
                 Assert.That(cacheNode.NextNode, Is.Null);
             });
@@ -44,8 +44,8 @@ namespace CacheProjectTest.CacheNode.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(key, Is.EqualTo(cacheNode.Key));
-                Assert.That(value, Is.EqualTo(cacheNode.Value));
+                Assert.That(key, Is.EqualTo(cacheNode.CacheNodeKey));
+                Assert.That(value, Is.EqualTo(cacheNode.CacheNodeValue));
                 Assert.That(cacheNode.PrevNode, Is.Null);
                 Assert.That(cacheNode.NextNode, Is.Null);
             });
@@ -64,8 +64,8 @@ namespace CacheProjectTest.CacheNode.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(key, Is.EqualTo(cacheNode.Key));
-                Assert.That(value, Is.EqualTo(cacheNode.Value));
+                Assert.That(key, Is.EqualTo(cacheNode.CacheNodeKey));
+                Assert.That(value, Is.EqualTo(cacheNode.CacheNodeValue));
                 Assert.That(cacheNode.PrevNode, Is.Null);
                 Assert.That(cacheNode.NextNode, Is.Null);
             });
@@ -97,8 +97,8 @@ namespace CacheProjectTest.CacheNode.Tests
             // Assert
             Assert.Multiple(() =>
             {
-                Assert.That(key, Is.EqualTo(cacheNode.Key));
-                Assert.That(value, Is.EqualTo(cacheNode.Value));
+                Assert.That(key, Is.EqualTo(cacheNode.CacheNodeKey));
+                Assert.That(value, Is.EqualTo(cacheNode.CacheNodeValue));
                 Assert.That(cacheNode.PrevNode, Is.Null);
                 Assert.That(cacheNode.NextNode, Is.Null);
             });

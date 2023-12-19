@@ -5,12 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using CacheProject;
+using System.Xml.Serialization;
 
-namespace CacheProjectTest.CacheNode.Tests
+namespace CacheProjectTest.CacheNodeTests
 {
     [TestFixture]
-    public class CacheNode_Concurrency_Load_Tests
+    public class TEMP_CacheNode_Concurrency_Load_Tests
     {
+        [Test]
+        public void ConcurrentReadWriteLoadTest()
+        {
+            var cacheNode = new CacheNode<int, string>(1, "value");
+        }
+
         [Test]
         public void ConcurrentReads_NoException()
         {
@@ -39,7 +46,7 @@ namespace CacheProjectTest.CacheNode.Tests
                 cacheNode.NextNode = newNode;
             });
 
-            Assert.That(cacheNode.NextNode.Value, Is.EqualTo("new value"));
+            Assert.That(cacheNode.NextNode.CacheNodeValue, Is.EqualTo("new value"));
         }
 
         [Test]
@@ -65,7 +72,7 @@ namespace CacheProjectTest.CacheNode.Tests
                 cacheNode.NextNode = newNode;
             });
 
-            Assert.That(cacheNode.NextNode.Value, Is.EqualTo("new value"));
+            Assert.That(cacheNode.NextNode.CacheNodeValue, Is.EqualTo("new value"));
         }
     }
 }

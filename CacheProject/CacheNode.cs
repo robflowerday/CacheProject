@@ -27,25 +27,27 @@ namespace CacheProject
         // Key and Value are of generic type and are immutable
         // aiding data integrity, particularly when thread-safety
         // is important.
-        public TCacheNodeKey Key { get; }
-        public TCacheNodeValue Value { get; }
+        public TCacheNodeKey CacheNodeKey { get; }
+        public TCacheNodeValue CacheNodeValue { get; }
 
         // PrevNode and NextNode are initialised to null indicating
         // head and tail of the doubly linked list.
-        private CacheNode<TCacheNodeKey, TCacheNodeValue>? prevNode = null;
-        private CacheNode<TCacheNodeKey, TCacheNodeValue>? nextNode = null;
+        private CacheNode<TCacheNodeKey, TCacheNodeValue>? prevNode;
+        private CacheNode<TCacheNodeKey, TCacheNodeValue>? nextNode;
 
-        public CacheNode(TCacheNodeKey key, TCacheNodeValue value)
+        public CacheNode(TCacheNodeKey pCacheNodeKey, TCacheNodeValue pCacheNodeValue)
         {
-            this.Key = key;
-            this.Value = value;
+            this.CacheNodeKey = pCacheNodeKey;
+            this.CacheNodeValue = pCacheNodeValue;
+            this.PrevNode = null;
+            this.NextNode = null;
         }
 
         // Allow getting and setting of the Previous and Next nodes
         // whilst ensuring thread-safety. If a write attempt is made
         // whilst the object is being written to or read, the attempting
         // thread will wait until the lock is Exited.
-        public CacheNode<TCacheNodeKey, TCacheNodeValue> PrevNode
+        public CacheNode<TCacheNodeKey, TCacheNodeValue>? PrevNode
         {
             get
             {
@@ -73,7 +75,7 @@ namespace CacheProject
             }
         }
 
-        public CacheNode<TCacheNodeKey, TCacheNodeValue> NextNode
+        public CacheNode<TCacheNodeKey, TCacheNodeValue>? NextNode
         {
             get
             {
