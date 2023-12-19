@@ -1,0 +1,24 @@
+- As the task stated that each value had a unique key, I have not implemented
+    any behaviour should an item be added to the cache with the same key as
+    an item in the cache, but a different value. If this were to be handled,
+    I imagine the desired behaviour would be to update the value of the item
+    in the cache with the exosting key. Under normal circumstances, I would
+    have established this by clarifying during the planing phase of the work.
+- Another clarification I would have made was around the generic type aspect
+    of the cache, I have created a cache using a doubly linked list and a
+    dictionary. Because of this, when using the cache, you can instantiate
+    it with any generic type for the key or value, but all future values must
+    be the same as these types. I could see this being usedul in FinBourne
+    for situations like caching regularly traded asset prices or calculation
+    results based off their price. If the intended behaviour was that any
+    type should have been allowed for the keys and values of the cache and
+    that these types are subject to change within the same cache, a hashTable
+    would have been a more appropriate replacement data structure than a
+    dictionary.
+      It's my understanding that these are very similar in C# and that C#
+    actually creates it's dictionary object based off a hash table, the
+    differences being type safety, meaning that an error will be thrown if
+    you don't use the key and value types that you are required to specify on
+    use (with performance benefits because of this for the dictionary due to
+    the boxing and unboxing needed to hold the type of the key and the value
+    in the HashTable).

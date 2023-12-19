@@ -9,29 +9,36 @@ using CacheProject;
 namespace CacheProjectTest.CacheNode.Tests
 {
     [TestFixture]
-    public class CacheNode_Concurrency_Tests
+    public class CacheNode_MultiThread_Tests
     {
         [Test]
-        public void ConcurrentReads_NoException()
+        public void MultiThreadReads_NoException()
         {
+            // Arrange
             const int numThreads = 10;
             CacheNode<int, string> cacheNode = new CacheNode<int, string>(1, "value");
 
+            // Act
             Parallel.For(0, numThreads, _ =>
             {
                 var prevNode = cacheNode.PrevNode;
                 var nextNode = cacheNode.NextNode;
             });
+
+            // Assertion is implicit as testing for no exception
         }
 
         [Test]
-        public void ConcurrentWrites_NoException_ChangesValue()
+        public void MultiThreadWrites_NoException_ChangesValue()
         {
+            // Arrange
             int numThreads = 10;
             CacheNode<int, string> cacheNode = new CacheNode<int, string>(1, "value");
 
+            // Assert
             Assert.That(cacheNode.NextNode, Is.Null);
 
+            // Act
             Parallel.For(0, numThreads, _ =>
             {
                 CacheNode<int, string> newNode = new CacheNode<int, string>(2, "new value");
@@ -39,22 +46,21 @@ namespace CacheProjectTest.CacheNode.Tests
                 cacheNode.NextNode = newNode;
             });
 
+            // Assert
             Assert.That(cacheNode.NextNode.CacheNodeValue, Is.EqualTo("new value"));
         }
 
         [Test]
-        public void ConcurrentReadsAndWrites_NoException_ChangesValue()
+        public void MultiThreadReadsAndWrites_NoException_ChangesValue()
         {
+            // Arrange
             int numThreads = 10;
             CacheNode<int, string> cacheNode = new CacheNode<int, string>(1, "value");
 
+            // Assert
             Assert.That(cacheNode.NextNode, Is.Null);
 
-            Parallel.For(0, numThreads, _ =>
-            {
-            
-            });
-
+            // Act
             Parallel.For(0, numThreads, _ =>
             {
                 CacheNode<int, string> newNode = new CacheNode<int, string>(2, "new value");
@@ -65,6 +71,7 @@ namespace CacheProjectTest.CacheNode.Tests
                 cacheNode.NextNode = newNode;
             });
 
+            // Assert
             Assert.That(cacheNode.NextNode.CacheNodeValue, Is.EqualTo("new value"));
         }
     }
