@@ -1,0 +1,17 @@
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.csproj.AssemblyReference.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.AssemblyInfoInputs.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.AssemblyInfo.cs
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.csproj.CoreCompileInputs.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\bin\Debug\net6.0\CacheProject.exe
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\bin\Debug\net6.0\CacheProject.deps.json
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\bin\Debug\net6.0\CacheProject.runtimeconfig.json
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\bin\Debug\net6.0\CacheProject.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\bin\Debug\net6.0\CacheProject.pdb
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\bin\Debug\net6.0\nunit.framework.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.csproj.CopyComplete
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\refint\CacheProject.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.pdb
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\CacheProject.genruntimeconfig.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\CacheProject\obj\Debug\net6.0\ref\CacheProject.dll
