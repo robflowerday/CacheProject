@@ -59,7 +59,7 @@ namespace CacheProjectTest.LRUCacheTests
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key1", true);
 
             // Act + Assert
-            Assert.Throws<KeyNotFoundException>(() => lruCacheInstance.GetCacheNodeValue("key2"));
+            Assert.Throws<KeyNotFoundException>(() => lruCacheInstance.GetCacheNodeValue("Key That is never used"));
         }
 
         [Test]

@@ -23,7 +23,6 @@ namespace CacheProjectTest.LRUCacheTests
 
             // Act
             int threadCount = 20;
-            Task[] tasks = new Task[threadCount];
 
             for (int i = 0; i < threadCount; i++)
             {
