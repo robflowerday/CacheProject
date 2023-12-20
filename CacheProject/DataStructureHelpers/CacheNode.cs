@@ -14,9 +14,7 @@ namespace CacheProject.DataStructureHelpers
     /// Key and Value are of generic type and are immutable to aid
     /// thread safety and data integrity.
     /// </summary>
-    /// <typeparam name="TCacheNodeKey">The type of the key.</typeparam>
-    /// <typeparam name="TCacheNodeValue">The type of the value.</typeparam>
-    public class CacheNode<TCacheNodeKey, TCacheNodeValue>
+    public class CacheNode
     {
         // PrevNode and NextNode should be mutable, but also thread
         // safe. Using reader-writer locks allows for simultaneous
@@ -27,15 +25,15 @@ namespace CacheProject.DataStructureHelpers
         // Key and Value are of generic type and are immutable
         // aiding data integrity, particularly when thread-safety
         // is important.
-        public TCacheNodeKey CacheNodeKey { get; }
-        public TCacheNodeValue CacheNodeValue { get; }
+        public object CacheNodeKey { get; }
+        public object CacheNodeValue { get; }
 
         // PrevNode and NextNode are initialised to null indicating
         // head and tail of the doubly linked list.
-        private CacheNode<TCacheNodeKey, TCacheNodeValue>? prevNode;
-        private CacheNode<TCacheNodeKey, TCacheNodeValue>? nextNode;
+        private CacheNode? prevNode;
+        private CacheNode? nextNode;
 
-        public CacheNode(TCacheNodeKey pCacheNodeKey, TCacheNodeValue pCacheNodeValue)
+        public CacheNode(object pCacheNodeKey, object pCacheNodeValue)
         {
             CacheNodeKey = pCacheNodeKey;
             CacheNodeValue = pCacheNodeValue;
@@ -47,7 +45,7 @@ namespace CacheProject.DataStructureHelpers
         // whilst ensuring thread-safety. If a write attempt is made
         // whilst the object is being written to or read, the attempting
         // thread will wait until the lock is Exited.
-        public CacheNode<TCacheNodeKey, TCacheNodeValue>? PrevNode
+        public CacheNode? PrevNode
         {
             get
             {
@@ -75,7 +73,7 @@ namespace CacheProject.DataStructureHelpers
             }
         }
 
-        public CacheNode<TCacheNodeKey, TCacheNodeValue>? NextNode
+        public CacheNode? NextNode
         {
             get
             {

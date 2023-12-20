@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CacheProject.DataStructureHelpers
 {
-    public class DoublyLinkedList<TCacheNodeKey, TCacheNodeValue>
+    public class DoublyLinkedList
     {
 
         private readonly object lockObject = new object();
 
-        public CacheNode<TCacheNodeKey, TCacheNodeValue>? Head { get; set; }
-        public CacheNode<TCacheNodeKey, TCacheNodeValue>? Tail { get; set; }
+        public CacheNode? Head { get; set; }
+        public CacheNode? Tail { get; set; }
 
         public DoublyLinkedList()
         {
@@ -24,7 +24,7 @@ namespace CacheProject.DataStructureHelpers
         /// Add cache node to head of linked list.
         /// </summary>
         /// <param name="newCacheNode"></param>
-        public void AddAsHead(CacheNode<TCacheNodeKey, TCacheNodeValue> newCacheNode)
+        public void AddAsHead(CacheNode newCacheNode)
         {
             lock (lockObject)
             {
@@ -43,7 +43,7 @@ namespace CacheProject.DataStructureHelpers
             }
         }
 
-        public void MoveNodeToHeadOfList(CacheNode<TCacheNodeKey, TCacheNodeValue> cacheNodeToMove)
+        public void MoveNodeToHeadOfList(CacheNode cacheNodeToMove)
         {
             lock (lockObject)
             {
@@ -86,14 +86,14 @@ namespace CacheProject.DataStructureHelpers
         /// of the doubly linked list structure.
         /// </summary>
         /// <returns> Tail of the linked list, which may be null (but shouldn't in our use case). </returns>
-        public CacheNode<TCacheNodeKey, TCacheNodeValue>? EvictLRUNode()
+        public CacheNode? EvictLRUNode()
         {
             lock (lockObject)
             {
                 // Non-empty linked list
                 if (Tail != null)
                 {
-                    CacheNode<TCacheNodeKey, TCacheNodeValue>? evictedNode = Tail;
+                    CacheNode? evictedNode = Tail;
 
                     // Head of linked list is not also the tail
                     if (Tail.PrevNode != null)

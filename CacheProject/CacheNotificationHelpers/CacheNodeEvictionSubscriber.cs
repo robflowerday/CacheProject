@@ -10,17 +10,15 @@ namespace CacheProject.CacheNotificationHelpers
     /// Creates event handler for cache node eviction and enables a consumer to
     /// subscribe and unsucribe from notifications.
     /// </summary>
-    /// <typeparam name="TCacheNodeKey"></typeparam>
-    /// <typeparam name="TCacheNodeValue"></typeparam>
-    public class CacheNodeEvictionSubscriber<TCacheNodeKey, TCacheNodeValue>
+    public class CacheNodeEvictionSubscriber
     {
-        public void Subsribe(LRUCache<TCacheNodeKey, TCacheNodeValue> lruCache)
+        public void Subsribe(LRUCache lruCache)
         {
             // Add event handler to LRUCache eciction event
             lruCache.CacheNodeEviction += HandleCacheNodeEviction;
         }
 
-        public void Unsubsribe(LRUCache<TCacheNodeKey, TCacheNodeValue> lruCache)
+        public void Unsubsribe(LRUCache lruCache)
         {
             // Remove event handler to LRUCache eciction event
             lruCache.CacheNodeEviction -= HandleCacheNodeEviction;
@@ -31,7 +29,7 @@ namespace CacheProject.CacheNotificationHelpers
         /// </summary>
         /// <param name="eventSendingObject"> The object that triggered the event. </param>
         /// <param name="eventArgs"> The details passed through from the event. </param>
-        private void HandleCacheNodeEviction(object eventSendingObject, CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue> eventArgs)
+        private void HandleCacheNodeEviction(object eventSendingObject, CacheNodeEvictionEventArgs eventArgs)
         {
             // Display details about the evicted node
             Console.WriteLine("Node evicted:");

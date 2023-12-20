@@ -10,10 +10,10 @@ namespace CacheProject.CacheNotificationHelpers
     /// EventArgs for CacheNodeEvictionEventArgs
     /// (The data passed from the event to the event handler)
     /// </summary>
-    public class CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue> : EventArgs
+    public class CacheNodeEvictionEventArgs : EventArgs
     {
-        public TCacheNodeKey cacheNodeKey { get; set; }
-        public TCacheNodeValue cacheNodeValue { get; set; }
+        public object cacheNodeKey { get; set; }
+        public object cacheNodeValue { get; set; }
         public DateTime dateTimeEvicted { get; set; }
     }
 }

@@ -10,18 +10,18 @@ using CacheProject.DataStructureHelpers;
 
 namespace CacheProject
 {
-    public class LRUCache<TCacheNodeKey, TCacheNodeValue>
+    public class LRUCache
     {
         // Event for notifying consumers when items are evicted
-        public event EventHandler<CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue>> CacheNodeEviction;
+        public event EventHandler<CacheNodeEvictionEventArgs> CacheNodeEviction;
 
         /// <summary>
         /// Handle event when event arguments are passed to 
         /// </summary>
         /// <param name="eventArgs"></param>
-        protected virtual void OnCacheNodeEviction(CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue> eventArgs)
+        protected virtual void OnCacheNodeEviction(CacheNodeEvictionEventArgs eventArgs)
         {
-            EventHandler<CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue>> eventHandler = CacheNodeEviction;
+            EventHandler<CacheNodeEvictionEventArgs> eventHandler = CacheNodeEviction;
             if (eventHandler != null)
                 eventHandler(this, eventArgs);
         }
@@ -29,7 +29,7 @@ namespace CacheProject
         // Instance of cache to enable use of LRUCache in a singleton pattern
         // The static nature of the variable ensures only one is instantiated
         // rather than allowing multiple instances of the class.
-        private static LRUCache<TCacheNodeKey, TCacheNodeValue>? lruCacheInstance;
+        private static LRUCache? lruCacheInstance;
 
         // Lock object used to ensure thread safety that distinguishes between reading
         // and writing for better performance when reading can be allowed
@@ -43,8 +43,8 @@ namespace CacheProject
         // Currently set immedeately after initilisation, want to change setting to be during init
         // ArrayWithOffset choice.
         private static int cacheCapacity;
-        private static Dictionary<TCacheNodeKey, CacheNode<TCacheNodeKey, TCacheNodeValue>> cacheDictionary;
-        private static DoublyLinkedList<TCacheNodeKey, TCacheNodeValue> cacheDoublyLinkedList;
+        private static Dictionary<object, CacheNode> cacheDictionary;
+        private static DoublyLinkedList cacheDoublyLinkedList;
 
         // Getting of capacity is single atommic operation and so read lock is unneccessary
         public int CacheCapacity { get; }
@@ -82,13 +82,13 @@ namespace CacheProject
                 while (cacheDictionary.Count > cacheCapacity)
                 {
                     // Determine key of tail node
-                    TCacheNodeKey tailNodeKey = cacheDoublyLinkedList.Tail.CacheNodeKey;
+                    object tailNodeKey = cacheDoublyLinkedList.Tail.CacheNodeKey;
 
                     // Remove Dictionary value with this Key
                     cacheDictionary.Remove(tailNodeKey);
 
                     // Remove tail node from DoublyLinkedList
-                    CacheNode<TCacheNodeKey, TCacheNodeValue>? evictedNode = cacheDoublyLinkedList.EvictLRUNode();
+                    CacheNode? evictedNode = cacheDoublyLinkedList.EvictLRUNode();
                 }
             }
             finally
@@ -98,7 +98,7 @@ namespace CacheProject
         }
 
         // Set accessable Property as instance for the lruCache
-        public static LRUCache<TCacheNodeKey, TCacheNodeValue> LRUCacheInstance
+        public static LRUCache LRUCacheInstance
         {
             // Using singleton pattern only allow creation of new cache instance
             // if one doesn't already exist.
@@ -111,7 +111,7 @@ namespace CacheProject
                     {
                         // if statement (null coallease assignment) to ensure only one instance is created if multiple
                         // threads enter previous if statement before new instance is created
-                        lruCacheInstance ??= new LRUCache<TCacheNodeKey, TCacheNodeValue>(chosenCacheCapacity: 100);
+                        lruCacheInstance ??= new LRUCache(chosenCacheCapacity: 100);
                     }
                 }
                 // If an LRU Cache instance already exists, return it
@@ -132,11 +132,11 @@ namespace CacheProject
             if (chosenCacheCapacity <= 0)
                 throw new ArgumentException("capacity must be greater than 0.");
             cacheCapacity = chosenCacheCapacity;
-            cacheDictionary = new Dictionary<TCacheNodeKey, CacheNode<TCacheNodeKey, TCacheNodeValue>>(cacheCapacity);
-            cacheDoublyLinkedList = new DoublyLinkedList<TCacheNodeKey, TCacheNodeValue>();
+            cacheDictionary = new Dictionary<object, CacheNode>(cacheCapacity);
+            cacheDoublyLinkedList = new DoublyLinkedList();
         }
 
-        public void AddOrMoveLinkedListCacheNode(TCacheNodeKey pCacheNodeKey, TCacheNodeValue pCacheNodeValue)
+        public void AddOrMoveLinkedListCacheNode(object pCacheNodeKey, object pCacheNodeValue)
         {
             // Throw error if key or value is null
             if (pCacheNodeKey == null)
@@ -151,7 +151,7 @@ namespace CacheProject
                 if (cacheDictionary.ContainsKey(pCacheNodeKey))
                 {
                     // Get the Node
-                    CacheNode<TCacheNodeKey, TCacheNodeValue> cacheNodeToMove = cacheDictionary[pCacheNodeKey];
+                    CacheNode cacheNodeToMove = cacheDictionary[pCacheNodeKey];
 
                     // Move item to front of DoublyLinkedList
                     cacheDoublyLinkedList.MoveNodeToHeadOfList(cacheNodeToMove);
@@ -162,23 +162,23 @@ namespace CacheProject
                     if (cacheDictionary.Count >= cacheCapacity)
                     {
                         // Determine key of tail node
-                        TCacheNodeKey tailNodeKey = cacheDoublyLinkedList.Tail.CacheNodeKey;
+                        object tailNodeKey = cacheDoublyLinkedList.Tail.CacheNodeKey;
 
                         // Remove Dictionary value with this Key
                         cacheDictionary.Remove(tailNodeKey);
 
                         // Remove tail node from DoublyLinkedList
-                        CacheNode<TCacheNodeKey, TCacheNodeValue>? evictedNode = cacheDoublyLinkedList.EvictLRUNode();
+                        CacheNode? evictedNode = cacheDoublyLinkedList.EvictLRUNode();
 
                         // Trigger event to notify subscribed consumers about cache node eviction
-                        CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue> eventArgs = new CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue>();
+                        CacheNodeEvictionEventArgs eventArgs = new CacheNodeEvictionEventArgs();
                         eventArgs.cacheNodeKey = evictedNode.CacheNodeKey;
                         eventArgs.cacheNodeValue = evictedNode.CacheNodeValue;
                         eventArgs.dateTimeEvicted = DateTime.Now;
                         OnCacheNodeEviction(eventArgs);
                     }
                     // Create new node to add
-                    CacheNode<TCacheNodeKey, TCacheNodeValue> newCacheNode = new CacheNode<TCacheNodeKey, TCacheNodeValue>(pCacheNodeKey, pCacheNodeValue);
+                    CacheNode newCacheNode = new CacheNode(pCacheNodeKey, pCacheNodeValue);
 
                     // Add item to Dictionary
                     cacheDictionary.Add(pCacheNodeKey, newCacheNode);
@@ -193,7 +193,7 @@ namespace CacheProject
             }
         }
 
-        public TCacheNodeValue GetCacheNodeValue(TCacheNodeKey pCacheNodeKey)
+        public object GetCacheNodeValue(object pCacheNodeKey)
         {
             if (pCacheNodeKey == null)
                 throw new ArgumentNullException(nameof(pCacheNodeKey) + " is null, which cannot be used to retrieve a value from the cache.");
