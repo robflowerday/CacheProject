@@ -10,7 +10,7 @@ using CacheProject.DataStructureHelpers;
 
 namespace CacheProject
 {
-    public class LRUCache<TCacheNodeKey, TCacheNodeValue>
+    public class LRUCacheHashtable<TCacheNodeKey, TCacheNodeValue>
     {
         // Event for notifying consumers when items are evicted
         public event EventHandler<CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue>> CacheNodeEviction;

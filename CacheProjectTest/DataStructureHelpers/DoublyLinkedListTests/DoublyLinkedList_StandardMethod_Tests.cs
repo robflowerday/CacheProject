@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using CacheProject;
+using CacheProject.DataStructures;
 
-namespace CacheProjectTest.DoublyLinkedListTests
+namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
 {
     [TestFixture]
     public class DoublyLinkedList_Simple_Method_Tests

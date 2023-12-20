@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CacheProject
+namespace CacheProject.DataStructureHelpers
 {
     public class DoublyLinkedList<TCacheNodeKey, TCacheNodeValue>
     {
@@ -16,8 +16,8 @@ namespace CacheProject
 
         public DoublyLinkedList()
         {
-            this.Head = null;
-            this.Tail = null;
+            Head = null;
+            Tail = null;
         }
 
         /// <summary>
@@ -29,21 +29,21 @@ namespace CacheProject
             lock (lockObject)
             {
                 // If linked list is empty
-                if (this.Head == null)
+                if (Head == null)
                 {
-                    this.Head = newCacheNode;
-                    this.Tail = newCacheNode;
+                    Head = newCacheNode;
+                    Tail = newCacheNode;
                 }
                 else
                 {
-                    this.Head.PrevNode = newCacheNode;
-                    newCacheNode.NextNode = this.Head;
-                    this.Head = newCacheNode;
+                    Head.PrevNode = newCacheNode;
+                    newCacheNode.NextNode = Head;
+                    Head = newCacheNode;
                 }
             }
         }
 
-        public void MoveNodeToHeadOfList(CacheNode<TCacheNodeKey, TCacheNodeValue>  cacheNodeToMove)
+        public void MoveNodeToHeadOfList(CacheNode<TCacheNodeKey, TCacheNodeValue> cacheNodeToMove)
         {
             lock (lockObject)
             {
@@ -52,15 +52,15 @@ namespace CacheProject
                 {
                     // Maniulate current surrounding nodes
                     cacheNodeToMove.PrevNode.NextNode = null;
-                    this.Tail = cacheNodeToMove.PrevNode;
+                    Tail = cacheNodeToMove.PrevNode;
 
                     // Mainpulate new surronding node
-                    this.Head.PrevNode = cacheNodeToMove;
+                    Head.PrevNode = cacheNodeToMove;
 
                     // Manipulate node to move
                     cacheNodeToMove.PrevNode = null;
-                    cacheNodeToMove.NextNode = this.Head;
-                    this.Head = cacheNodeToMove;
+                    cacheNodeToMove.NextNode = Head;
+                    Head = cacheNodeToMove;
                 }
                 // if cache node has previous and next node
                 else if (cacheNodeToMove.NextNode != null && cacheNodeToMove.PrevNode != null)
@@ -70,12 +70,12 @@ namespace CacheProject
                     cacheNodeToMove.NextNode.PrevNode = cacheNodeToMove.PrevNode;
 
                     // Mainpulate new surronding node
-                    this.Head.PrevNode = cacheNodeToMove;
+                    Head.PrevNode = cacheNodeToMove;
 
                     // Manipulate node to move
                     cacheNodeToMove.PrevNode = null;
-                    cacheNodeToMove.NextNode = this.Head;
-                    this.Head = cacheNodeToMove;
+                    cacheNodeToMove.NextNode = Head;
+                    Head = cacheNodeToMove;
                 }
                 // Else node to move is already the head node
             }
@@ -91,20 +91,20 @@ namespace CacheProject
             lock (lockObject)
             {
                 // Non-empty linked list
-                if (this.Tail != null)
+                if (Tail != null)
                 {
-                    CacheNode<TCacheNodeKey, TCacheNodeValue>? evictedNode = this.Tail;
+                    CacheNode<TCacheNodeKey, TCacheNodeValue>? evictedNode = Tail;
 
                     // Head of linked list is not also the tail
-                    if (this.Tail.PrevNode != null)
+                    if (Tail.PrevNode != null)
                     {
-                        this.Tail.PrevNode.NextNode = null;
-                        this.Tail = this.Tail.PrevNode;
+                        Tail.PrevNode.NextNode = null;
+                        Tail = Tail.PrevNode;
                         return evictedNode;
                     }
                     // Head of linked list is also the tail
-                    this.Tail = null;
-                    this.Head = null;
+                    Tail = null;
+                    Head = null;
 
                     // set references to other nodes to nulll to avoid
                     // potential memory leaks (though I believe this would

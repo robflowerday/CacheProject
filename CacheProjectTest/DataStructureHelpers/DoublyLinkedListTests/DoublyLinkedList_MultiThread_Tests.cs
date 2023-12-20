@@ -7,7 +7,7 @@ using NUnit.Framework;
 using CacheProject;
 using System.Globalization;
 
-namespace CacheProjectTest.DoublyLinkedListTests
+namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
 {
     [TestFixture]
     public class DoublyLinkedList_MultiThread_Tests
@@ -16,7 +16,7 @@ namespace CacheProjectTest.DoublyLinkedListTests
         {
             int length = 0;
             CacheNode<string, int> currentNode = doublyLinkedList.Head;
-            
+
             while (currentNode != null)
             {
                 currentNode = currentNode.NextNode;

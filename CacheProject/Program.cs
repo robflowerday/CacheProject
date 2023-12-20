@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using CacheProject.CacheNotificationHelpers;
+using NUnit.Framework;
 
 namespace CacheProject
 {
@@ -8,31 +10,53 @@ namespace CacheProject
     {
         static void Main()
         {
-            // Create a dictionary with CacheNodeKey as keys and CacheNode instances as values
-            Dictionary<CacheNodeKey, CacheNode<CacheNodeKey, CacheNodeValue>> cacheDictionary =
-                new Dictionary<CacheNodeKey, CacheNode<CacheNodeKey, CacheNodeValue>>();
+            // Create or get instance of LRUCache
+            LRUCache<string, double> lruCache = LRUCache<string, double>.LRUCacheInstance;
 
-        }
-    }
+            // Create a cache node eviction subscriber instance
+            CacheNodeEvictionSubscriber<string, double> cacheNodeEvictionSubscriber = new CacheNodeEvictionSubscriber<string, double>();
 
-    // Define CacheNodeKey and CacheNodeValue classes if not already defined
-    public class CacheNodeKey
-    {
-        public string Key { get; }
+            // Subscribe to get notified when cache nodes are evicted
+            cacheNodeEvictionSubscriber.Subsribe(lruCache);
 
-        public CacheNodeKey(string key)
-        {
-            Key = key;
-        }
-    }
+            // find out when cache is
+            lruCache.SetCacheCapacity(2, allowEviction: true);
+            lruCache.AddOrMoveLinkedListCacheNode("1", 1);
+            lruCache.AddOrMoveLinkedListCacheNode("2", 2);
+            lruCache.AddOrMoveLinkedListCacheNode("3", 3);
 
-    public class CacheNodeValue
-    {
-        public string Value { get; }
+            // Unsubscribe
+            cacheNodeEvictionSubscriber.Unsubsribe(lruCache);
 
-        public CacheNodeValue(string value)
-        {
-            Value = value;
+            // do the same
+            lruCache.AddOrMoveLinkedListCacheNode("4", 4);
+            lruCache.AddOrMoveLinkedListCacheNode("5", 5);
+            lruCache.AddOrMoveLinkedListCacheNode("6", 6);
+
+            // Subscribe again
+            cacheNodeEvictionSubscriber.Subsribe(lruCache);
+
+            // do the same
+            lruCache.AddOrMoveLinkedListCacheNode("7", 7);
+            lruCache.AddOrMoveLinkedListCacheNode("8", 8);
+            lruCache.AddOrMoveLinkedListCacheNode("9", 9);
+
+            // Expected print outs:
+            // 1
+            // 5
+            // 6
+            // 7
+
+            // Unsubscribe
+            cacheNodeEvictionSubscriber.Unsubsribe(lruCache);
+
+            // Subscribe again
+            cacheNodeEvictionSubscriber.Subsribe(lruCache);
+
+            // do the same
+            lruCache.AddOrMoveLinkedListCacheNode("7", 7);
+            lruCache.AddOrMoveLinkedListCacheNode("8", 8);
+            lruCache.AddOrMoveLinkedListCacheNode("9", 9);
         }
     }
 }

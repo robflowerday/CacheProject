@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using CacheProject;
 
-namespace CacheProjectTest.CacheNode.Tests
+namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
 {
     [TestFixture]
     public class CacheNode_MultiThread_Tests

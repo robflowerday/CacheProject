@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using CacheProject;
+using CacheProject.DataStructures;
 
-namespace CacheProjectTest.CacheNode.Tests
+namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
 {
     [TestFixture]
     public class CacheNode_Creation_Tests

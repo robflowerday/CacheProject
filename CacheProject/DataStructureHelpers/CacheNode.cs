@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CacheProject
+namespace CacheProject.DataStructureHelpers
 {
     /// <summary>
     /// Represents a node within a doubly linked list, designed for
@@ -37,10 +37,10 @@ namespace CacheProject
 
         public CacheNode(TCacheNodeKey pCacheNodeKey, TCacheNodeValue pCacheNodeValue)
         {
-            this.CacheNodeKey = pCacheNodeKey;
-            this.CacheNodeValue = pCacheNodeValue;
-            this.PrevNode = null;
-            this.NextNode = null;
+            CacheNodeKey = pCacheNodeKey;
+            CacheNodeValue = pCacheNodeValue;
+            PrevNode = null;
+            NextNode = null;
         }
 
         // Allow getting and setting of the Previous and Next nodes
@@ -53,24 +53,24 @@ namespace CacheProject
             {
                 try
                 {
-                    this.lockObject.EnterReadLock();
-                    return this.prevNode;
+                    lockObject.EnterReadLock();
+                    return prevNode;
                 }
                 finally
                 {
-                    this.lockObject.ExitReadLock();
+                    lockObject.ExitReadLock();
                 }
             }
             set
             {
                 try
                 {
-                    this.lockObject.EnterWriteLock();
-                    this.prevNode = value;
+                    lockObject.EnterWriteLock();
+                    prevNode = value;
                 }
                 finally
                 {
-                    this.lockObject.ExitWriteLock();
+                    lockObject.ExitWriteLock();
                 }
             }
         }
@@ -81,20 +81,20 @@ namespace CacheProject
             {
                 try
                 {
-                    this.lockObject.EnterReadLock();
-                    return this.nextNode;
+                    lockObject.EnterReadLock();
+                    return nextNode;
                 }
                 finally
                 {
-                    this.lockObject.ExitReadLock();
+                    lockObject.ExitReadLock();
                 }
             }
             set
             {
                 try
                 {
-                    this.lockObject.EnterWriteLock();
-                    this.nextNode = value;
+                    lockObject.EnterWriteLock();
+                    nextNode = value;
                 }
                 finally
                 {
