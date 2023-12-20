@@ -9,6 +9,10 @@ namespace CacheProject
 {
     public class LRUCache<TCacheNodeKey, TCacheNodeValue>
     {
+        // Event for notifying consumers when items are evicted
+        // Uses custom event handler
+        public event EventHandler
+
         // Instance of cache to enable use of LRUCache in a singleton pattern
         // The static nature of the variable ensures only one is instantiated
         // rather than allowing multiple instances of the class.
