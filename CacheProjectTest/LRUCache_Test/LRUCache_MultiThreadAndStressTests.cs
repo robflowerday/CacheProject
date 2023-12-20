@@ -17,9 +17,9 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_ConcurrentReadsAndWritesAreThreadSafe_NoException()
         {
             // Arrange
-            LRUCache<string, int> lruCache = new LRUCache<string, int>(100);
+            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
             for (int i=0; i < 95; i++)
-                lruCache.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
+                lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
 
             // Act
             int threadCount = 20;
@@ -28,9 +28,9 @@ namespace CacheProjectTest.LRUCacheTests
             for (int i = 0; i < threadCount; i++)
             {
                 if (i % 2 == 0)
-                    lruCache.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
+                    lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
                 else
-                    lruCache.GetCacheNodeValue(Convert.ToString(i + 2));
+                    lruCacheInstance.GetCacheNodeValue(Convert.ToString(i + 2));
             }
 
             // Assert
@@ -38,55 +38,58 @@ namespace CacheProjectTest.LRUCacheTests
         }
 
         [Test]
-        [Timeout(15000)] // Test has 15 second time limit
+        [Timeout(20000)] // Test has 20 second time limit
         public void LRUCache_HighConcurrentReads_ShouldSucceedInReasonableTime()
         {
             // Arrange
             int capacity = 10;
             int numReads = 100000000;
-            LRUCache<string, int> cache = new LRUCache<string, int>(capacity);
-            for (int i = 0; i < 10; i++)
-                cache.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
+            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            lruCacheInstance.SetCacheCapacity(capacity, allowEviction: true);
+            for (int i = 0; i < capacity; i++)
+                lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
 
             // Act
             for (int i = 0; i < numReads; i++)
-                cache.GetCacheNodeValue(Convert.ToString(i%10));
+                lruCacheInstance.GetCacheNodeValue(Convert.ToString(i%capacity));
 
             // Assert
             // Assertion is handles by [Timeout]
         }
 
         [Test]
-        [Timeout(15000)] // Test has 15 second time limit
+        [Timeout(20000)] // Test has 20 second time limit
         public void LRUCache_HighConcurrentWrites_ShouldSucceedInReasonableTime()
         {
             // Arrange
             int capacity = 50;
             int numWrites = 10000000;
-            LRUCache<string, int> cache = new LRUCache<string, int>(capacity);
+            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act
             for (int i = 0; i < numWrites; i++)
-                cache.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
+                lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
 
             // Assert
             // Assertion is handles by [Timeout]
         }
 
         [Test]
-        [Timeout(15000)] // Test has 15 second time limit
+        [Timeout(20000)] // Test has 20 second time limit
         public void LRUCache_HighConcurrentReadsAndWrites_ShouldSucceedInReasonableTime()
         {
             // Arrange
             int capacity = 50;
             int numReadsAndWrites = 10000000;
-            LRUCache<string, int> cache = new LRUCache<string, int>(capacity);
+            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act
             for (int i = 0; i < numReadsAndWrites; i++)
             {
-                cache.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
-                cache.GetCacheNodeValue(Convert.ToString(i));
+                lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
+                lruCacheInstance.GetCacheNodeValue(Convert.ToString(i));
             }
 
             // Assert

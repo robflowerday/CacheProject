@@ -39,6 +39,7 @@ namespace CacheProjectTest.CacheNode.Tests
             Assert.That(cacheNode.NextNode, Is.Null);
 
             // Act
+            // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, numThreads, _ =>
             {
                 CacheNode<int, string> newNode = new CacheNode<int, string>(2, "new value");
@@ -61,6 +62,7 @@ namespace CacheProjectTest.CacheNode.Tests
             Assert.That(cacheNode.NextNode, Is.Null);
 
             // Act
+            // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, numThreads, _ =>
             {
                 CacheNode<int, string> newNode = new CacheNode<int, string>(2, "new value");

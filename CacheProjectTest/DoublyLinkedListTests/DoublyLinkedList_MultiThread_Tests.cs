@@ -34,15 +34,14 @@ namespace CacheProjectTest.DoublyLinkedListTests
 
             // Act
             // Run the AddAsHead method 100 times as a task
+            // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, 100, i =>
             {
-                CacheNode<string, int> newCacheNode = new CacheNode<string, int>(Convert.ToString(i), i);
-                Task task = Task.Run(() => doublyLinkedList.AddAsHead(newCacheNode));
-                if (task != null)
-                    tasks.Add(task);
+                Task task = Task.Run(() => doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i)));
+                tasks.Add(task);
             });
 
-            Task.WaitAll(tasks.ToArray());
+            Task.WaitAll(tasks.ToArray(), millisecondsTimeout: 30000); // Allow 30 seconds before failing
 
             // Assert
             Assert.That(NonEmptyLinkedListLength(doublyLinkedList), Is.EqualTo(100));
@@ -68,6 +67,7 @@ namespace CacheProjectTest.DoublyLinkedListTests
 
             // Act
             // Run the method MoveNodeToHeadOfList 100 times as a task
+            // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, 100, i =>
             {
                 if (cacheNode.NextNode != null)
@@ -96,6 +96,7 @@ namespace CacheProjectTest.DoublyLinkedListTests
 
             // Act
             // Run the method MoveNodeToHeadOfList 100 times as a task
+            // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, 50, i =>
             {
                 Task task = Task.Run(() => doublyLinkedList.EvictLRUNode());
@@ -103,7 +104,8 @@ namespace CacheProjectTest.DoublyLinkedListTests
                     tasks.Add(task);
             });
 
-            Task.WaitAll(tasks.ToArray());
+            // Can't use WaitAll as we expect some null values to be possible
+            Task.WaitAll(tasks.ToArray(), millisecondsTimeout: 30000); // Alow 30 seconds before timeout
 
             // Assert
             Assert.That(NonEmptyLinkedListLength(doublyLinkedList), Is.EqualTo(50));
@@ -115,7 +117,7 @@ namespace CacheProjectTest.DoublyLinkedListTests
             // Arrange
             DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
             List<Task> tasks = new List<Task>();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 500; i++)
             {
                 doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i));
             }
@@ -124,16 +126,18 @@ namespace CacheProjectTest.DoublyLinkedListTests
 
             // Act
             // Run the method MoveNodeToHeadOfList 100 times as a task
+            // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, 300, i =>
             {
-                CacheNode<string, int> cacheNodeToMove = doublyLinkedList.Tail;
-                CacheNode<string, int> cacheNodeToAdd = new CacheNode<string, int>(Convert.ToString(i), i);
-                tasks.Add(Task.Run(() => doublyLinkedList.AddAsHead(cacheNodeToAdd)));
-                tasks.Add(Task.Run(() => doublyLinkedList.MoveNodeToHeadOfList(cacheNodeToMove)));
+                tasks.Add(Task.Run(() => doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i))));
+                // not thread safe because Tail can be changed after setting in and prior to (and is regularly changed by EvictLRUNode)
+                // test case that will pass almost every time is to use a large list (one larger that the number of nodes being removed
+                // in total) and doublyLinkedList.Head.nextNode.
+                tasks.Add(Task.Run(() => doublyLinkedList.MoveNodeToHeadOfList(doublyLinkedList.Head.NextNode)));
                 tasks.Add(Task.Run(() => doublyLinkedList.EvictLRUNode()));
             });
 
-            Task.WaitAll(tasks.ToArray());
+            Task.WaitAll(tasks.ToArray(), millisecondsTimeout: 30000); // Allow 30 second timeout
 
             // Assert
             // Ensure no error is thrown

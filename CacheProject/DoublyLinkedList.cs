@@ -85,7 +85,7 @@ namespace CacheProject
         /// Remove and return the tail of the linked list if it exists, managing the integrity
         /// of the doubly linked list structure.
         /// </summary>
-        /// <returns> Tail of the linked list, which may be null (but shouldn't). </returns>
+        /// <returns> Tail of the linked list, which may be null (but shouldn't in our use case). </returns>
         public CacheNode<TCacheNodeKey, TCacheNodeValue>? EvictLRUNode()
         {
             lock (lockObject)
@@ -105,6 +105,14 @@ namespace CacheProject
                     // Head of linked list is also the tail
                     this.Tail = null;
                     this.Head = null;
+
+                    // set references to other nodes to nulll to avoid
+                    // potential memory leaks (though I believe this would
+                    // be handled by C#s garbage collector using something
+                    // like a generational garbage collector.)
+                    evictedNode.PrevNode = null;
+                    evictedNode.NextNode = null;
+
                     return evictedNode;
                 }
                 // Empty linked list
