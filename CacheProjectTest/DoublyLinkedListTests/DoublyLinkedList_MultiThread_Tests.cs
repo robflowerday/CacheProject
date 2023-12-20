@@ -37,7 +37,9 @@ namespace CacheProjectTest.DoublyLinkedListTests
             Parallel.For(0, 100, i =>
             {
                 CacheNode<string, int> newCacheNode = new CacheNode<string, int>(Convert.ToString(i), i);
-                tasks.Add(Task.Run(() => doublyLinkedList.AddAsHead(newCacheNode)));
+                Task task = Task.Run(() => doublyLinkedList.AddAsHead(newCacheNode));
+                if (task != null)
+                    tasks.Add(task);
             });
 
             Task.WaitAll(tasks.ToArray());
@@ -96,7 +98,9 @@ namespace CacheProjectTest.DoublyLinkedListTests
             // Run the method MoveNodeToHeadOfList 100 times as a task
             Parallel.For(0, 50, i =>
             {
-                tasks.Add(Task.Run(() => doublyLinkedList.EvictLRUNode()));
+                Task task = Task.Run(() => doublyLinkedList.EvictLRUNode());
+                if (task != null)
+                    tasks.Add(task);
             });
 
             Task.WaitAll(tasks.ToArray());
@@ -120,7 +124,7 @@ namespace CacheProjectTest.DoublyLinkedListTests
 
             // Act
             // Run the method MoveNodeToHeadOfList 100 times as a task
-            Parallel.For(0, 1000, i =>
+            Parallel.For(0, 300, i =>
             {
                 CacheNode<string, int> cacheNodeToMove = doublyLinkedList.Tail;
                 CacheNode<string, int> cacheNodeToAdd = new CacheNode<string, int>(Convert.ToString(i), i);

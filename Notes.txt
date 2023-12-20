@@ -1,3 +1,8 @@
+- Should clarify whether null vlaues should be valid inputs in the cache, I
+    have coded a solution that suggests they shouldn't be. But I can think of
+    a case where they should be, for example if you search for market data
+    for an asset and you don't have it in a database or can't get it from an
+    API, but you don't want to spend time or money on the call again.
 - As the task stated that each value had a unique key, I have not implemented
     any behaviour should an item be added to the cache with the same key as
     an item in the cache, but a different value. If this were to be handled,
@@ -22,3 +27,12 @@
     use (with performance benefits because of this for the dictionary due to
     the boxing and unboxing needed to hold the type of the key and the value
     in the HashTable).
+- I would have also considered how I would test the private attributes of my
+    classes.
+- Because Dictionarys are type safe, when I look for a value in the
+    dictionary, if the value is not there, I can't return null as the generic
+    type for the calue of the dictionary could be non-nullable. instead I
+    have thrown an error, but I would prefer to use a HashTable which would
+    allow a null return here.
+- Ran short on time so mixed some unit tests together, like
+    LRUCache_MultiThreadAndStressTests.
