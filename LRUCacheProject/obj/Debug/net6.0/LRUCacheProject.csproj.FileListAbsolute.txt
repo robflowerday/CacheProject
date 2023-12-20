@@ -1,0 +1,15 @@
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\bin\Debug\net6.0\LRUCacheProject.exe
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\bin\Debug\net6.0\LRUCacheProject.deps.json
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\bin\Debug\net6.0\LRUCacheProject.runtimeconfig.json
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\bin\Debug\net6.0\LRUCacheProject.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\bin\Debug\net6.0\LRUCacheProject.pdb
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.csproj.AssemblyReference.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.AssemblyInfoInputs.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.AssemblyInfo.cs
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.csproj.CoreCompileInputs.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\refint\LRUCacheProject.dll
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.pdb
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\LRUCacheProject.genruntimeconfig.cache
+C:\Users\robert.flowerday\source\repos\CacheProject\CacheProject\LRUCacheProject\obj\Debug\net6.0\ref\LRUCacheProject.dll

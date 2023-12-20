@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using CacheProject.CacheNotificationHelpers;
-using CacheProject.DataStructureHelpers;
+using CacheProjectHash.CacheNotificationHelpers;
+using CacheProjectHash.DataStructureHelpers;
 
-namespace CacheProject
+namespace CacheProjectHash
 {
-    public class LRUCacheHashtable<TCacheNodeKey, TCacheNodeValue>
+    public class LRUCache<TCacheNodeKey, TCacheNodeValue>
     {
         // Event for notifying consumers when items are evicted
         public event EventHandler<CacheNodeEvictionEventArgs<TCacheNodeKey, TCacheNodeValue>> CacheNodeEviction;
