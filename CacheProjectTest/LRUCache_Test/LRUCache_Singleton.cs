@@ -22,8 +22,8 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_isSingleton()
         {
             // Arrange + Act
-            LRUCache<string?, bool?> lruCacheInstance1 = LRUCache<string?, bool?>.LRUCacheInstance;
-            LRUCache<string?, bool?> lruCacheInstance2 = LRUCache<string?, bool?>.LRUCacheInstance;
+            LRUCache lruCacheInstance1 = LRUCache.LRUCacheInstance;
+            LRUCache lruCacheInstance2 = LRUCache.LRUCacheInstance;
 
             // Assert
             Assert.AreSame(lruCacheInstance1, lruCacheInstance2, "LRUCache instances should point to the same reference meaning they are the same object and follow the singleton design pattern.");

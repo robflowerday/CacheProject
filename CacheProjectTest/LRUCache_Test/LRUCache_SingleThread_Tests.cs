@@ -17,7 +17,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_NegativeCapacity_ThrowsError()
         {
             // Arrange
-            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             int capacity = -1;
 
             // Act + Assert
@@ -28,7 +28,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_ZeroCapacity_ThrowsError()
         {
             // Arrange
-            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             int capacity = 0;
 
             // Act + Assert
@@ -39,12 +39,12 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_GetCacheNodeValue_Exists()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key", true);
 
             // Act
-            bool cacheNodeValue = lruCacheInstance.GetCacheNodeValue("key");
+            object cacheNodeValue = lruCacheInstance.GetCacheNodeValue("key");
 
             // Assert
             Assert.That(cacheNodeValue, Is.True);
@@ -54,7 +54,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_GetCacheNodeValue_DoesntExist()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key1", true);
 
@@ -66,7 +66,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_GetCacheNodeValue_EmptyCache()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act + Assert
@@ -77,7 +77,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_GetCacheNodeValue_NullKey()
         {
             // Arrange
-            LRUCache<string?, bool> lruCacheInstance = LRUCache<string?, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act + Assert
@@ -88,7 +88,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_empty()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act
@@ -102,7 +102,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_AddNullKey()
         {
             // Arrange
-            LRUCache<string?, bool> lruCacheInstance = LRUCache<string?, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act + Assert
@@ -113,7 +113,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_AddNullValue()
         {
             // Arrange
-            LRUCache<string?, bool?> lruCacheInstance = LRUCache<string?, bool?>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act + Assert
@@ -124,7 +124,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_AddNullKeyAndValue()
         {
             // Arrange
-            LRUCache<string?, bool?> lruCacheInstance = LRUCache<string?, bool?>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act + Assert
@@ -135,7 +135,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_nonempty()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key1", true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key2", false);
@@ -151,7 +151,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_AtCapacity()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key1", true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key2", false);
@@ -172,7 +172,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_AddOrMoveLinkedListCacheNode_MoveExisitngNodeToFront()
         {
             // Arrange
-            LRUCache<string, bool> lruCacheInstance = LRUCache<string, bool>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key1", true);
             lruCacheInstance.AddOrMoveLinkedListCacheNode("key2", false);

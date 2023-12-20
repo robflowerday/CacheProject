@@ -17,7 +17,7 @@ namespace CacheProjectTest.LRUCacheTests
         public void LRUCache_ConcurrentReadsAndWritesAreThreadSafe_NoException()
         {
             // Arrange
-            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             for (int i=0; i < 95; i++)
                 lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
 
@@ -43,7 +43,7 @@ namespace CacheProjectTest.LRUCacheTests
             // Arrange
             int capacity = 10;
             int numReads = 100000000;
-            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(capacity, allowEviction: true);
             for (int i = 0; i < capacity; i++)
                 lruCacheInstance.AddOrMoveLinkedListCacheNode(Convert.ToString(i), i);
@@ -63,7 +63,7 @@ namespace CacheProjectTest.LRUCacheTests
             // Arrange
             int capacity = 50;
             int numWrites = 10000000;
-            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act
@@ -81,7 +81,7 @@ namespace CacheProjectTest.LRUCacheTests
             // Arrange
             int capacity = 50;
             int numReadsAndWrites = 10000000;
-            LRUCache<string, int> lruCacheInstance = LRUCache<string, int>.LRUCacheInstance;
+            LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
 
             // Act

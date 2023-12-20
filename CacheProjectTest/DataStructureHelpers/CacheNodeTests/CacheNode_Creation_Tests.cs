@@ -19,7 +19,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
             string value = "Value";
 
             // Act
-            CacheNode<int, string> cacheNode = new CacheNode<int, string>(key, value);
+            CacheNode cacheNode = new CacheNode(key, value);
 
             // Assert
             Assert.Multiple(() =>
@@ -39,7 +39,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
             int value = 2;
 
             // Act
-            CacheNode<int, int> cacheNode = new CacheNode<int, int>(key, value);
+            CacheNode cacheNode = new CacheNode(key, value);
 
             // Assert
             Assert.Multiple(() =>
@@ -59,7 +59,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
             bool value = true;
 
             // Act
-            CacheNode<int, bool> cacheNode = new CacheNode<int, bool>(key, value);
+            CacheNode cacheNode = new CacheNode(key, value);
 
             // Assert
             Assert.Multiple(() =>
@@ -92,7 +92,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
             TestClass value = new TestClass("TestValue");
 
             // Act
-            CacheNode<int, TestClass> cacheNode = new CacheNode<int, TestClass>(key, value);
+            CacheNode cacheNode = new CacheNode(key, value);
 
             // Assert
             Assert.Multiple(() =>

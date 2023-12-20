@@ -14,7 +14,7 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         [Test]
         public void AppropriateConstructor_int_string_success()
         {
-            DoublyLinkedList<int, string> doublyLinkedList = new DoublyLinkedList<int, string>();
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
 
             Assert.Multiple(() =>
             {
@@ -26,7 +26,7 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         [Test]
         public void AppropriateConstructor_bool_double_success()
         {
-            DoublyLinkedList<bool, double> doublyLinkedList = new DoublyLinkedList<bool, double>();
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
 
             Assert.Multiple(() =>
             {
@@ -39,8 +39,8 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void AddAsHead_empty_list()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
-            CacheNode<string, int> newCacheNode = new CacheNode<string, int>("One", 1);
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+            CacheNode newCacheNode = new CacheNode("One", 1);
 
             // Act
             doublyLinkedList.AddAsHead(newCacheNode);
@@ -57,10 +57,10 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void AddAsHead_three_items_list()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
-            CacheNode<string, int> newCacheNode1 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode2 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode3 = new CacheNode<string, int>("One", 1);
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+            CacheNode newCacheNode1 = new CacheNode("One", 1);
+            CacheNode newCacheNode2 = new CacheNode("One", 1);
+            CacheNode newCacheNode3 = new CacheNode("One", 1);
 
             // Act
             doublyLinkedList.AddAsHead(newCacheNode1);
@@ -100,8 +100,8 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MoveNodeToHeadOfList_OneItem()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
-            CacheNode<string, int> newCacheNode = new CacheNode<string, int>("One", 1);
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+            CacheNode newCacheNode = new CacheNode("One", 1);
             doublyLinkedList.AddAsHead(newCacheNode);
 
             // Act
@@ -119,10 +119,10 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MoveNodeToHeadOfList_ThreeItems_Move_Head()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
-            CacheNode<string, int> newCacheNode1 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode2 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode3 = new CacheNode<string, int>("One", 1);
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+            CacheNode newCacheNode1 = new CacheNode("One", 1);
+            CacheNode newCacheNode2 = new CacheNode("One", 1);
+            CacheNode newCacheNode3 = new CacheNode("One", 1);
             doublyLinkedList.AddAsHead(newCacheNode1);
             doublyLinkedList.AddAsHead(newCacheNode2);
             doublyLinkedList.AddAsHead(newCacheNode3);
@@ -144,10 +144,10 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MoveNodeToHeadOfList_ThreeItems_Move_Middle()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
-            CacheNode<string, int> newCacheNode1 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode2 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode3 = new CacheNode<string, int>("One", 1);
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+            CacheNode newCacheNode1 = new CacheNode("One", 1);
+            CacheNode newCacheNode2 = new CacheNode("One", 1);
+            CacheNode newCacheNode3 = new CacheNode("One", 1);
             doublyLinkedList.AddAsHead(newCacheNode1);
             doublyLinkedList.AddAsHead(newCacheNode2);
             doublyLinkedList.AddAsHead(newCacheNode3);
@@ -172,10 +172,10 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MoveNodeToHeadOfList_ThreeItems_Move_Tail()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
-            CacheNode<string, int> newCacheNode1 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode2 = new CacheNode<string, int>("One", 1);
-            CacheNode<string, int> newCacheNode3 = new CacheNode<string, int>("One", 1);
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
+            CacheNode newCacheNode1 = new CacheNode("One", 1);
+            CacheNode newCacheNode2 = new CacheNode("One", 1);
+            CacheNode newCacheNode3 = new CacheNode("One", 1);
             doublyLinkedList.AddAsHead(newCacheNode1);
             doublyLinkedList.AddAsHead(newCacheNode2);
             doublyLinkedList.AddAsHead(newCacheNode3);

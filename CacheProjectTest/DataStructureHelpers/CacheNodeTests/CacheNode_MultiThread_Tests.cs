@@ -17,7 +17,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
         {
             // Arrange
             const int numThreads = 10;
-            CacheNode<int, string> cacheNode = new CacheNode<int, string>(1, "value");
+            CacheNode cacheNode = new CacheNode(1, "value");
 
             // Act
             Parallel.For(0, numThreads, _ =>
@@ -34,7 +34,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
         {
             // Arrange
             int numThreads = 10;
-            CacheNode<int, string> cacheNode = new CacheNode<int, string>(1, "value");
+            CacheNode cacheNode = new CacheNode(1, "value");
 
             // Assert
             Assert.That(cacheNode.NextNode, Is.Null);
@@ -43,7 +43,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
             // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, numThreads, _ =>
             {
-                CacheNode<int, string> newNode = new CacheNode<int, string>(2, "new value");
+                CacheNode newNode = new CacheNode(2, "new value");
                 cacheNode.PrevNode = newNode;
                 cacheNode.NextNode = newNode;
             });
@@ -57,7 +57,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
         {
             // Arrange
             int numThreads = 10;
-            CacheNode<int, string> cacheNode = new CacheNode<int, string>(1, "value");
+            CacheNode cacheNode = new CacheNode(1, "value");
 
             // Assert
             Assert.That(cacheNode.NextNode, Is.Null);
@@ -66,7 +66,7 @@ namespace CacheProjectTest.DataStructureHelpers.CacheNodeTests
             // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, numThreads, _ =>
             {
-                CacheNode<int, string> newNode = new CacheNode<int, string>(2, "new value");
+                CacheNode newNode = new CacheNode(2, "new value");
 
                 // Read
                 var prevNode = cacheNode.PrevNode;

@@ -13,10 +13,10 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
     [TestFixture]
     public class DoublyLinkedList_MultiThread_Tests
     {
-        private int NonEmptyLinkedListLength(DoublyLinkedList<string, int> doublyLinkedList)
+        private int NonEmptyLinkedListLength(DoublyLinkedList doublyLinkedList)
         {
             int length = 0;
-            CacheNode<string, int> currentNode = doublyLinkedList.Head;
+            CacheNode currentNode = doublyLinkedList.Head;
 
             while (currentNode != null)
             {
@@ -30,14 +30,14 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MultiThread_AddAsHead_SafeAndAccurate()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
 
             // Act
             // Run the AddAsHead method 100 times as a task
             // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, 100, i =>
             {
-                doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i));
+                doublyLinkedList.AddAsHead(new CacheNode(Convert.ToString(i), i));
             });
 
             // Assert
@@ -48,13 +48,13 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MultiThread_MoveNodeToHeadOfList_ExceptionNotThrown()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
             for (int i = 0; i < 100; i++)
             {
-                doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i));
+                doublyLinkedList.AddAsHead(new CacheNode(Convert.ToString(i), i));
             }
 
-            CacheNode<string, int> cacheNode = doublyLinkedList.Tail;
+            CacheNode cacheNode = doublyLinkedList.Tail;
 
             // Act
             // Run the method MoveNodeToHeadOfList 100 times as a task
@@ -76,11 +76,11 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MultiThread_EvictLRUNode_AppropriateState()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
 
             for (int i = 0; i < 100; i++)
             {
-                doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i));
+                doublyLinkedList.AddAsHead(new CacheNode(Convert.ToString(i), i));
             }
 
             // Act
@@ -97,21 +97,21 @@ namespace CacheProjectTest.DataStructureHelpers.DoublyLinkedListTests
         public void MultiThread_MixedMethods_ExceptionNotThrown()
         {
             // Arrange
-            DoublyLinkedList<string, int> doublyLinkedList = new DoublyLinkedList<string, int>();
+            DoublyLinkedList doublyLinkedList = new DoublyLinkedList();
 
             for (int i = 0; i < 500; i++)
             {
-                doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i));
+                doublyLinkedList.AddAsHead(new CacheNode(Convert.ToString(i), i));
             }
 
-            CacheNode<string, int> cacheNode = doublyLinkedList.Tail;
+            CacheNode cacheNode = doublyLinkedList.Tail;
 
             // Act
             // Run the method MoveNodeToHeadOfList 100 times as a task
             // Tasks run in parallel, tests that the lock ensures no run condition errors
             Parallel.For(0, 300, i =>
             {
-                doublyLinkedList.AddAsHead(new CacheNode<string, int>(Convert.ToString(i), i));
+                doublyLinkedList.AddAsHead(new CacheNode(Convert.ToString(i), i));
                 // not thread safe because Tail can be changed after setting in and prior to (and is regularly changed by EvictLRUNode)
                 // test case that will pass almost every time is to use a large list (one larger that the number of nodes being removed
                 // in total) and doublyLinkedList.Head.nextNode.
