@@ -57,3 +57,17 @@ Using a hash table as a key holding structure is easier to resize but still perf
 Dictionaries are effectively dynamically resizing hash tables and perform efficiently.
 
 We can then pair the Dictionary with either a Singly or Doubly linked list. A singly linked list would take up less memory, however, when updating a node in the middle of the list to move it to the front of the list, we'd need to loop through the whole linked list to set the next node of the previous node and so the operation would take O(n) time. Sacrificing the extra memory, a linked list performs this operation in O(1) time.
+
+### What would I do next?
+- Clean up code and add more useful documentation.
+- Optimise the reseting of the LRUCache.
+- Clarify aspects of my build:
+    Is generic type key use the desired behaviour?
+    Should you be able to delete the cache entirely? (A destructor?)
+    Should I create a generic Type on initialisation of the cache, but then insist on type safety for key and
+    value from that point onwards using generics?
+- Add more unit tests around load testing and edge cases.
+- Check where more errors may help the user.
+- Add in a unit test for the node eviction notifier.
+- Potentially add in options for other eviction strategies and potatntially underlying data structures that could be accessed
+    via an enum.
