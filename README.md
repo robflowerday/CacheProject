@@ -2,8 +2,13 @@
 
 ## Notes on using this code
 - You can see the basic utilisation of the subscriber and addtion of nodes to the cache in Program.cs
+- More methods are available in LRUCache class
+- In it's current state you have to first initilise that cache to change it's capacity from it's default value of
+    100.
 - The solution file can be found in CacheProject/
 - CacheProjectTest is a project that holds unit tests for the cache.
+- Tests are written using NUnit and can be run in the same way as usual (for me that means using Visual Studios
+    TestExplorer to kick them off and debug).
 
 ## Aim and requirements
 The aim of this repo is to create a cache that:
