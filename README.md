@@ -1,4 +1,10 @@
 # Cache Project
+
+## Notes on using this code
+- You can see the basic utilisation of the subscriber and addtion of nodes to the cache in Program.cs
+- The solution file can be found in CacheProject/
+- CacheProjectTest is a project that holds unit tests for the cache.
+
 ## Aim and requirements
 The aim of this repo is to create a cache that:
 - Uses Least Recently Used eviction policy.
