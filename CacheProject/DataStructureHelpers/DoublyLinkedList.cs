@@ -43,6 +43,10 @@ namespace CacheProject.DataStructureHelpers
             }
         }
 
+        /// <summary>
+        /// Moves a node from any point in the linked list to the front.
+        /// </summary>
+        /// <param name="cacheNodeToMove"> Node to move to front of linked list. </param>
         public void MoveNodeToHeadOfList(CacheNode cacheNodeToMove)
         {
             lock (lockObject)

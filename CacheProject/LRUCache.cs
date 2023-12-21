@@ -3,20 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Xml.Serialization;
 using CacheProject.CacheNotificationHelpers;
 using CacheProject.DataStructureHelpers;
 
 namespace CacheProject
 {
+    /// <summary>
+    /// A LRU Cache implementation allowing for generic key and value types using a Dictionary
+    /// and Doubly Linked List undeer the hood, performing all common operations in O(1) time
+    /// complexity and implementing the singleton design pattern as well as offering consumers
+    /// the ability to be notified when a cache node is evicted.
+    /// </summary>
     public class LRUCache
     {
-        // Event for notifying consumers when items are evicted
+        /// <summary>
+        /// Event for notifying consumers when items are evicted.
+        /// </summary>
         public event EventHandler<CacheNodeEvictionEventArgs> CacheNodeEviction;
 
         /// <summary>
-        /// Handle event when event arguments are passed to 
+        /// Handle event when event arguments are passed by the event trigger.
         /// </summary>
         /// <param name="eventArgs"></param>
         protected virtual void OnCacheNodeEviction(CacheNodeEvictionEventArgs eventArgs)
@@ -27,26 +35,24 @@ namespace CacheProject
         }
 
         // Instance of cache to enable use of LRUCache in a singleton pattern
-        // The static nature of the variable ensures only one is instantiated
-        // rather than allowing multiple instances of the class.
         private static LRUCache? lruCacheInstance;
 
         // Lock object used to ensure thread safety that distinguishes between reading
-        // and writing for better performance when reading can be allowed
+        // and writing for better performance when only reading takes place and can be
+        // done simultaneously.
         private ReaderWriterLockSlim readWriteLockObject = new ReaderWriterLockSlim();
-        // lock object for creating a single instance when differenciating between
-        // reading and writing is not neccessary.
+
+        // lock object for creating a single instance of a cache amd for when
+        // differenciating between reading and writing is not neccessary.
         private static readonly object lockInstanceObject = new object();
 
-        // All data structures here are static as there is only one intended use of this class.
-        // Arbitrary default capacity to 100
-        // Currently set immedeately after initilisation, want to change setting to be during init
-        // ArrayWithOffset choice.
+        // Next 3 data structures here are static as there is only one intended use of this class.
         private static int cacheCapacity;
+
+        // Cache item lookups are performed in O(1) time complexity due to the dictionary
         private static Dictionary<object, CacheNode> cacheDictionary;
         private static DoublyLinkedList cacheDoublyLinkedList;
 
-        // Getting of capacity is single atommic operation and so read lock is unneccessary
         public int CacheCapacity { get; }
 
         /// <summary>
@@ -74,21 +80,25 @@ namespace CacheProject
                 // Change capacity of cache
                 cacheCapacity = newCacheCapacity;
 
-                // Evict nodes if neccessary (this can be optised by creating EvictManyLRU method
+                // Evict nodes if neccessary (this could be optimsed by creating EvictManyLRU method
                 // in DoublyLinkedList.cs which does not change pointers to other LinkedList nodes
                 // until all but the last eviction is complete. This would require thinking about
-                // how the nodes that still have references to them are removed from the heap -
-                // I believe this would be managed by the generational garbage collector.)
+                // how the nodes that still have references to them are removed from the heap if
+                // they implemented an IDisposable interface, in this implementation memory management
+                // for this use case is dealt with by the garbage collector).
                 while (cacheDictionary.Count > cacheCapacity)
                 {
-                    // Determine key of tail node
+                    // Remove tail node from LinkedList and corresponding dictionary key, value pair
                     object tailNodeKey = cacheDoublyLinkedList.Tail.CacheNodeKey;
-
-                    // Remove Dictionary value with this Key
                     cacheDictionary.Remove(tailNodeKey);
-
-                    // Remove tail node from DoublyLinkedList
                     CacheNode? evictedNode = cacheDoublyLinkedList.EvictLRUNode();
+
+                    // Trigger event to notify subscribed consumers about cache node eviction
+                    CacheNodeEvictionEventArgs eventArgs = new CacheNodeEvictionEventArgs();
+                    eventArgs.cacheNodeKey = evictedNode.CacheNodeKey;
+                    eventArgs.cacheNodeValue = evictedNode.CacheNodeValue;
+                    eventArgs.dateTimeEvicted = DateTime.Now;
+                    OnCacheNodeEviction(eventArgs);
                 }
             }
             finally
@@ -109,8 +119,10 @@ namespace CacheProject
                 {
                     lock (lockInstanceObject)
                     {
-                        // if statement (null coallease assignment) to ensure only one instance is created if multiple
+                        // null coallease assignment to ensure only one instance is created if multiple
                         // threads enter previous if statement before new instance is created
+                        // null coalleasing operator here checks if lruCacheInstance is null and assigns it to the right
+                        // side result if it is.
                         lruCacheInstance ??= new LRUCache(chosenCacheCapacity: 100);
                     }
                 }
@@ -136,38 +148,44 @@ namespace CacheProject
             cacheDoublyLinkedList = new DoublyLinkedList();
         }
 
-        public void AddOrMoveLinkedListCacheNode(object pCacheNodeKey, object pCacheNodeValue)
+        /// <summary>
+        /// Takes a key value pair and adds it to the cache if it's not already present.
+        /// 
+        /// If already present the value is moved to the head of the underlying linked list as the
+        /// most frequently used item.
+        /// 
+        /// If adding to the cache brings the cache past it's capacity, the least frequently
+        /// used cache node is evicted from the cache.
+        /// 
+        /// null calues are not valud for cache keys or values.
+        /// </summary>
+        /// <param name="cacheNodeKey"> Unique key to be used in cache data storage. </param>
+        /// <param name="cacheNodeValue"> Value to store in cache. </param>
+        /// <exception cref="ArgumentNullException"> A null value was set as the cache key or value. </exception>
+        public void AddOrMoveLinkedListCacheNode(object cacheNodeKey, object cacheNodeValue)
         {
             // Throw error if key or value is null
-            if (pCacheNodeKey == null)
-                throw new ArgumentNullException(nameof(pCacheNodeKey) + " is null, which cannot be used as a key in the cache.");
-            if (pCacheNodeValue == null)
-                throw new ArgumentNullException(nameof(pCacheNodeValue) + " is null, which cannot be used as a value in the cache.");
+            if (cacheNodeKey == null)
+                throw new ArgumentNullException(nameof(cacheNodeKey) + " is null, which cannot be used as a key in the cache.");
+            if (cacheNodeValue == null)
+                throw new ArgumentNullException(nameof(cacheNodeValue) + " is null, which cannot be used as a value in the cache.");
 
             readWriteLockObject.EnterWriteLock();
             try
             {
-                // Check if item is in cache
-                if (cacheDictionary.ContainsKey(pCacheNodeKey))
+                // If item is in cache, move to front of cache
+                if (cacheDictionary.ContainsKey(cacheNodeKey))
                 {
-                    // Get the Node
-                    CacheNode cacheNodeToMove = cacheDictionary[pCacheNodeKey];
-
-                    // Move item to front of DoublyLinkedList
+                    CacheNode cacheNodeToMove = cacheDictionary[cacheNodeKey];
                     cacheDoublyLinkedList.MoveNodeToHeadOfList(cacheNodeToMove);
                 }
                 else
                 {
-                    // If at capacity limit
+                    // If at capacity limit remove least recently used and notify subscribers
                     if (cacheDictionary.Count >= cacheCapacity)
                     {
-                        // Determine key of tail node
                         object tailNodeKey = cacheDoublyLinkedList.Tail.CacheNodeKey;
-
-                        // Remove Dictionary value with this Key
                         cacheDictionary.Remove(tailNodeKey);
-
-                        // Remove tail node from DoublyLinkedList
                         CacheNode? evictedNode = cacheDoublyLinkedList.EvictLRUNode();
 
                         // Trigger event to notify subscribed consumers about cache node eviction
@@ -177,13 +195,9 @@ namespace CacheProject
                         eventArgs.dateTimeEvicted = DateTime.Now;
                         OnCacheNodeEviction(eventArgs);
                     }
-                    // Create new node to add
-                    CacheNode newCacheNode = new CacheNode(pCacheNodeKey, pCacheNodeValue);
-
-                    // Add item to Dictionary
-                    cacheDictionary.Add(pCacheNodeKey, newCacheNode);
-
-                    // Add item to front of DoublyLinkedList
+                    // Add new node to cache
+                    CacheNode newCacheNode = new CacheNode(cacheNodeKey, cacheNodeValue);
+                    cacheDictionary.Add(cacheNodeKey, newCacheNode);
                     cacheDoublyLinkedList.AddAsHead(newCacheNode);
                 }
             }
@@ -193,24 +207,42 @@ namespace CacheProject
             }
         }
 
-        public object GetCacheNodeValue(object pCacheNodeKey)
+        /// <summary>
+        /// Get value from cache given unique key if key is in dictionary and move
+        /// cache node to the head of the cache if it's not already there.
+        /// 
+        /// If key is null or not in the dictinary, throw relevant excetion.
+        /// </summary>
+        /// <param name="cacheNodeKey"> Unique key linked to potential cache value to use for search. </param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"> Key given is null which is not valid in this implementation of a cache. </exception>
+        /// <exception cref="KeyNotFoundException"> Given key was not found in the cache. </exception>
+        public object GetCacheNodeValue(object cacheNodeKey)
         {
-            if (pCacheNodeKey == null)
-                throw new ArgumentNullException(nameof(pCacheNodeKey) + " is null, which cannot be used to retrieve a value from the cache.");
+            if (cacheNodeKey == null)
+                throw new ArgumentNullException(nameof(cacheNodeKey) + " is null, which cannot be used to retrieve a value from the cache.");
 
-            // Read lock used to ensure that pCacheNodeKey remains in the cacheDictionary with a non-null value
+            // Read lock used to ensure that cacheNodeKey remains in the cacheDictionary with a non-null value
             // whilst reading.
             readWriteLockObject.EnterReadLock();
             try
             {
-                if (cacheDictionary.ContainsKey(pCacheNodeKey))
-                    return cacheDictionary[pCacheNodeKey].CacheNodeValue;
+                // This section could likely be made slightly more performant if we perform the
+                // check for the cache node twice, once inside the lock, once outside, so that
+                // it remains thread safe but we can perform most cache miss Exception handling
+                // without hindering other tasks running.
+                if (cacheDictionary.ContainsKey(cacheNodeKey))
+                {
+                    CacheNode cacheNode = cacheDictionary[cacheNodeKey];
+                    cacheDoublyLinkedList.MoveNodeToHeadOfList(cacheNode);
+                    return cacheDictionary[cacheNodeKey].CacheNodeValue;
+                }
                 else
-                    throw new KeyNotFoundException(nameof(pCacheNodeKey) + " Not found in cache.");
+                    throw new KeyNotFoundException(nameof(cacheNodeKey) + " Not found in cache.");
             }
             catch (KeyNotFoundException)
             {
-                throw new KeyNotFoundException(nameof(pCacheNodeKey) + " Not found in cache.");
+                throw new KeyNotFoundException(nameof(cacheNodeKey) + " Not found in cache.");
             }
             finally
             {
@@ -222,6 +254,8 @@ namespace CacheProject
         /// Reset the cache, releasing all resources and clearing internal
         /// data structures without any notification process of which members
         /// were removed as they all will be.
+        /// 
+        /// Cache node eviction event is not reset to keep consumers subscribed.
         /// </summary>
         public void ResetCache()
         {
@@ -250,10 +284,7 @@ namespace CacheProject
                 }
                 cacheDictionary.Clear();
 
-                // Reset cachCapacity to default value (100)
                 cacheCapacity = 100;
-
-                // Reinitialise read-write lock boject
                 readWriteLockObject = new ReaderWriterLockSlim();
             }
         }

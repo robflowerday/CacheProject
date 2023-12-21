@@ -35,19 +35,36 @@ namespace CacheProjectTest.LRUCacheTests
             Assert.Throws<ArgumentException>(() => lruCacheInstance.SetCacheCapacity(capacity));
         }
 
+        /// <summary>
+        /// I do not believe parallel tests themselves when run are
+        /// thread safe, to get around this, rather than using a lock
+        /// I've used a key that has not been used elsewhere. Success
+        /// still isn't gaurenteed if large numbers of successive node
+        /// removals occur at the wrong time.
+        /// </summary>
         [Test]
-        public void LRUCache_GetCacheNodeValue_Exists()
+        public void LRUCache_GetCacheNodeValue_Move_Exists()
         {
             // Arrange
             LRUCache lruCacheInstance = LRUCache.LRUCacheInstance;
             lruCacheInstance.SetCacheCapacity(3, allowEviction: true);
-            lruCacheInstance.AddOrMoveLinkedListCacheNode("key", true);
+            lruCacheInstance.AddOrMoveLinkedListCacheNode("key1", "val1");
+            lruCacheInstance.AddOrMoveLinkedListCacheNode("getcachenodetestkey", "getcachenodetestvalue");
+            lruCacheInstance.AddOrMoveLinkedListCacheNode("key3", "val3");
 
             // Act
-            object cacheNodeValue = lruCacheInstance.GetCacheNodeValue("key");
+            object cacheNodeValue = lruCacheInstance.GetCacheNodeValue("getcachenodetestkey");
 
             // Assert
-            Assert.That(cacheNodeValue, Is.True);
+            Assert.That(cacheNodeValue, Is.EqualTo("getcachenodetestvalue"));
+
+            // Act (ensure that only 1 of the previous values is left in the cache)
+            lruCacheInstance.AddOrMoveLinkedListCacheNode("key4", "val4");
+            lruCacheInstance.AddOrMoveLinkedListCacheNode("key5", "val5");
+            object cacheNodeValueAgain = lruCacheInstance.GetCacheNodeValue("getcachenodetestkey");
+
+            // Assert
+            Assert.That(cacheNodeValueAgain, Is.EqualTo("getcachenodetestvalue"));
         }
 
         [Test]
